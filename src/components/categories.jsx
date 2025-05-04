@@ -1,8 +1,8 @@
 export default function Categories() {
   return (
-    <div class="categories">
+    <div className="categories">
       <ul>
-        <li class="active">Все</li>
+        <li className="active">Все</li>
         <li>М'ясні</li>
         <li>Вегетеріанські</li>
         <li>Гриль</li>

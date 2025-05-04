@@ -1,26 +1,37 @@
-export default function PizzaBlock(props) {
+import React, { useState } from "react";
+
+export default function PizzaBlock({ title, price }) {
+  const [pizzaCount, setPizzaCount] = useState(0);
+
+  const onClickAddPizza = () => {
+    setPizzaCount((value) => value + 1);
+  };
+
   return (
-    <div class="pizza-block">
+    <div className="pizza-block">
       <img
-        class="pizza-block__image"
+        className="pizza-block__image"
         src="https://res.cloudinary.com/dilgog6bf/image/upload/v1740650204/%D0%A1%D0%B8%D1%80%D0%BD%D0%B8%D0%B9_%D0%B1%D0%BE%D1%80%D1%82%D0%B8%D0%BA_aov1uo.png"
         alt="Pizza"
       />
-      <h4 class="pizza-block__title">{props.title}</h4>
-      <div class="pizza-block__selector">
+      <h4 className="pizza-block__title">{title}</h4>
+      <div className="pizza-block__selector">
         <ul>
-          <li class="active">тонке</li>
+          <li className="active">тонке</li>
           <li>традиційне</li>
         </ul>
         <ul>
-          <li class="active">26 см.</li>
+          <li className="active">26 см.</li>
           <li>30 см.</li>
           <li>40 см.</li>
         </ul>
       </div>
-      <div class="pizza-block__bottom">
-        <div class="pizza-block__price">від {props.price} ₴</div>
-        <div class="button button--outline button--add">
+      <div className="pizza-block__bottom">
+        <div className="pizza-block__price">від {price} ₴</div>
+        <button
+          onClick={onClickAddPizza}
+          className="button button--outline button--add"
+        >
           <svg
             width="12"
             height="12"
@@ -34,8 +45,8 @@ export default function PizzaBlock(props) {
             />
           </svg>
           <span>Добавити</span>
-          <i>2</i>
-        </div>
+          <i>{pizzaCount}</i>
+        </button>
       </div>
     </div>
   );
