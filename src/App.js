@@ -1,39 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/header";
-import Categories from "./components/categories";
-import Sort from "./components/sort";
-import PizzaBlock from "./components/pizza-block";
 
 import "./scss/app.scss";
+import Cart from "./pages/cart";
+import Home from "./pages/home";
+import NotFound from "./pages/not-found";
 
 function App() {
-  const [pizzas, setPizzas] = useState([]);
-
-  useEffect(() => {
-    fetch("https://681a27391ac1155635080379.mockapi.io/items")
-      .then((res) => res.json())
-      .then((json) => {
-        setPizzas(() => json);
-      });
-  }, []);
+  // const pathname = window.location.pathname;
 
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
         <div className="container">
-          <div className="content__top">
-            {Categories()}
-            {/*<Categories />*/}
-            <Sort />
-          </div>
-          <h2 className="content__title">Всі піци</h2>
-          <div className="content__items">
-            {pizzas.map((object) => {
-              return <PizzaBlock key={object.id} {...object} />;
-            })}
-          </div>
+          {/*pathname === "/" && <Home /> -- простіше кажучи менш гібкий спосіб тому що не працює з динамічними роутами. Перевірка строга*/}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
       </div>
     </div>
