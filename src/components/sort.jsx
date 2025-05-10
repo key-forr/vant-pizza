@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-export default function Sort() {
+export default function Sort({ value, onClickSort, sortOrder, onClickOrder }) {
   const [isShow, setIsShow] = useState(false);
-  const [activeListIndex, setActiveListIndex] = useState(0);
-  const list = ["популярності", "ціні", "алфавіту"];
-  const sortName = list[activeListIndex];
 
-  const onClickListElem = (index) => {
-    setActiveListIndex(index);
+  const list = [
+    { name: "популярності", sortProperty: "rating" },
+    { name: "ціні", sortProperty: "price" },
+    { name: "алфавіту", sortProperty: "title" },
+  ];
+
+  const onClickListItem = (object) => {
+    onClickSort(object);
     setIsShow(false);
   };
 
@@ -15,6 +18,8 @@ export default function Sort() {
     <div className="sort">
       <div className="sort__label">
         <svg
+          onClick={() => onClickOrder()}
+          className={sortOrder ? "arrow" : "arrow up"}
           width="10"
           height="6"
           viewBox="0 0 10 6"
@@ -27,20 +32,22 @@ export default function Sort() {
           />
         </svg>
         <b>Сортування по:</b>
-        <span onClick={() => setIsShow(!isShow)}>{sortName}</span>
+        <span onClick={() => setIsShow(!isShow)}>{value.name}</span>
       </div>
       {isShow && (
         <div className="sort__popup">
           <ul>
-            {list.map((value, index) => (
+            {list.map((object, index) => (
               <li
                 key={index}
                 onClick={() => {
-                  onClickListElem(index);
+                  onClickListItem(object);
                 }}
-                className={activeListIndex === index ? "active" : ""}
+                className={
+                  value.sortProperty === object.sortProperty ? "active" : ""
+                }
               >
-                {value}
+                {object.name}
               </li>
             ))}
           </ul>
