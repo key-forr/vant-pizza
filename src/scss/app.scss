@@ -410,6 +410,7 @@ body {
 
 .arrow {
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 .arrow.up {
   transform: rotate(180deg);
