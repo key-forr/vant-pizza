@@ -1,16 +1,20 @@
 import { useState } from "react";
+import { selectSortType, switchOrder } from "../store/slices/filter-slice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Sort({ value, onClickSort, sortOrder, onClickOrder }) {
+const list = [
+  { name: "популярності", sortProperty: "rating" },
+  { name: "ціні", sortProperty: "price" },
+  { name: "алфавіту", sortProperty: "title" },
+];
+
+export default function Sort() {
   const [isShow, setIsShow] = useState(false);
-
-  const list = [
-    { name: "популярності", sortProperty: "rating" },
-    { name: "ціні", sortProperty: "price" },
-    { name: "алфавіту", sortProperty: "title" },
-  ];
+  const { sortType, sortOrder } = useSelector((state) => state.filter);
+  const dispatch = useDispatch();
 
   const onClickListItem = (object) => {
-    onClickSort(object);
+    dispatch(selectSortType(object));
     setIsShow(false);
   };
 
@@ -18,7 +22,7 @@ export default function Sort({ value, onClickSort, sortOrder, onClickOrder }) {
     <div className="sort">
       <div className="sort__label">
         <svg
-          onClick={() => onClickOrder()}
+          onClick={() => dispatch(switchOrder())}
           className={sortOrder ? "arrow" : "arrow up"}
           width="10"
           height="6"
@@ -32,7 +36,7 @@ export default function Sort({ value, onClickSort, sortOrder, onClickOrder }) {
           />
         </svg>
         <b>Сортування по:</b>
-        <span onClick={() => setIsShow(!isShow)}>{value.name}</span>
+        <span onClick={() => setIsShow(!isShow)}>{sortType.name}</span>
       </div>
       {isShow && (
         <div className="sort__popup">
@@ -44,7 +48,7 @@ export default function Sort({ value, onClickSort, sortOrder, onClickOrder }) {
                   onClickListItem(object);
                 }}
                 className={
-                  value.sortProperty === object.sortProperty ? "active" : ""
+                  sortType.sortProperty === object.sortProperty ? "active" : ""
                 }
               >
                 {object.name}

@@ -6,19 +6,20 @@ import PizzaBlock from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/skeleton";
 import Pagination from "../components/Pagination";
 import { SearchContext } from "../App";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCategory } from "../store/slices/filter-slice";
 
 const Home = () => {
   const { searchValue } = useContext(SearchContext);
+  const { categoryId, sortType, sortOrder } = useSelector(
+    (state) => state.filter
+  );
+  const dispatch = useDispatch();
+
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState({
-    name: "популярності",
-    sortProperty: "rating",
-  });
-  const [sortOrder, setSortOrder] = useState(true);
 
+  const [currentPage, setCurrentPage] = useState(1);
   const category = categoryId ? `category=${categoryId}` : "";
   const orderType = sortOrder ? "asc" : "desc";
 
@@ -54,14 +55,9 @@ const Home = () => {
         })} */}
         <Categories
           value={categoryId}
-          onClickCategory={(index) => setCategoryId(index)}
+          onClickCategory={(index) => dispatch(selectCategory(index))}
         />
-        <Sort
-          value={sortType}
-          onClickSort={(object) => setSortType(object)}
-          sortOrder={sortOrder}
-          onClickOrder={() => setSortOrder(!sortOrder)}
-        />
+        <Sort />
       </div>
       <h2 className="content__title">Всі піци</h2>
       <div className="content__items">{isLoading ? skeletons : items}</div>
