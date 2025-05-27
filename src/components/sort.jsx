@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { selectSortType, switchOrder } from "../store/slices/filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,14 +12,29 @@ export default function Sort() {
   const [isShow, setIsShow] = useState(false);
   const { sortType, sortOrder } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+  const sortRef = useRef();
 
   const onClickListItem = (object) => {
     dispatch(selectSortType(object));
     setIsShow(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sortRef.current && !sortRef.current.contains(event.target)) {
+        setIsShow(false);
+      }
+    };
+
+    document.body.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           onClick={() => dispatch(switchOrder())}
