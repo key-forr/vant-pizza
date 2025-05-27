@@ -11,7 +11,7 @@ const initialState = {
 };
 
 export const filterSlice = createSlice({
-  name: "filters",
+  name: "filter",
   initialState: initialState,
   reducers: {
     selectCategory: (state, action) => {

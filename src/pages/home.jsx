@@ -2,7 +2,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 
 import Categories from "../components/categories";
 import qs from "qs";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Sort, { sortList } from "../components/sort";
 import PizzaBlock from "../components/PizzaBlock";
@@ -15,6 +14,7 @@ import {
   selectPage,
   setFilters,
 } from "../store/slices/filter-slice";
+import { fetchPizzas } from "../store/slices/pizza-slice";
 import { useCallback } from "react";
 
 const Home = () => {
@@ -22,28 +22,43 @@ const Home = () => {
   const { categoryId, sortOrder, sortType, pageNumber } = useSelector(
     (state) => state.filter
   );
+
+  const { pizzas, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const [pizzas, setPizzas] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const category = categoryId ? `category=${categoryId}` : "";
   const orderType = sortOrder ? "asc" : "desc";
 
-  const fetchPizzas = useCallback(() => {
-    setIsLoading(true);
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
-      )
-      .then((res) => {
-        setPizzas(res.data);
-        setIsLoading(false);
-      });
+  const getPizzas = useCallback(async () => {
+    //#region
+    // axios
+    //   .get(
+    //     `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
+    //   )
+    //   .then((res) => {
+    //     setPizzas(res.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setIsLoading(false);
+    //   });
+    //#endregion
+
+    dispatch(
+      fetchPizzas({
+        category,
+        orderType,
+        pageNumber,
+        sortType,
+      })
+    );
+
+    window.scrollTo(0, 0);
   }, [pageNumber, category, sortType.sortProperty, orderType]);
 
   useEffect(() => {
@@ -64,7 +79,7 @@ const Home = () => {
     window.scrollTo(0, 0);
 
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
@@ -78,7 +93,6 @@ const Home = () => {
         pageNumber,
         orderType,
       });
-      console.log(queryString);
       navigate(`?${queryString}`);
     }
     isMounted.current = true;
@@ -107,7 +121,20 @@ const Home = () => {
         <Sort />
       </div>
       <h2 className="content__title">Всі піци</h2>
-      <div className="content__items">{isLoading ? skeletons : items}</div>
+      {status == "error" ? (
+        <div className="content__error-info">
+          <h2>Виникла помилка</h2>
+          <p>
+            На жаль, не вдалось получити піци. Попробуйте повторити спробу
+            пізніше!
+          </p>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status == "loading" ? skeletons : items}
+        </div>
+      )}
+
       <Pagination
         currentPage={pageNumber}
         onChangePage={(number) => dispatch(selectPage(number))}
