@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import Categories from "../components/categories";
 import qs from "qs";
@@ -7,7 +7,6 @@ import Sort, { sortList } from "../components/sort";
 import PizzaBlock from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/skeleton";
 import Pagination from "../components/Pagination";
-import { SearchContext } from "../App";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCategory,
@@ -18,10 +17,8 @@ import { fetchPizzas } from "../store/slices/pizza-slice";
 import { useCallback } from "react";
 
 const Home = () => {
-  const { searchValue } = useContext(SearchContext);
-  const { categoryId, sortOrder, sortType, pageNumber } = useSelector(
-    (state) => state.filter
-  );
+  const { searchValue, categoryId, sortOrder, sortType, pageNumber } =
+    useSelector((state) => state.filter);
 
   const { pizzas, status } = useSelector((state) => state.pizza);
   const dispatch = useDispatch();

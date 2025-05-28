@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { selectSortType, switchOrder } from "../store/slices/filter-slice";
+import {
+  filterSelector,
+  selectSortType,
+  switchOrder,
+} from "../store/slices/filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 
 export const sortList = [
@@ -10,7 +14,7 @@ export const sortList = [
 
 export default function Sort() {
   const [isShow, setIsShow] = useState(false);
-  const { sortType, sortOrder } = useSelector((state) => state.filter);
+  const { sortType, sortOrder } = useSelector(filterSelector);
   const dispatch = useDispatch();
   const sortRef = useRef();
 

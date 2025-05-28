@@ -3,13 +3,22 @@ import axios from "axios";
 
 export const fetchPizzas = createAsyncThunk(
   "pizza/fetchPizzasStatus",
-  async (params) => {
+  async (params, thunkApi) => {
     const { category, orderType, pageNumber, sortType } = params;
 
     const { data } = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
     );
-    return data;
+
+    //#region
+    //console.log(thunkApi);
+    //console.log(thunkApi.getState());
+    // if (data.length == 0) {
+    //   return thunkApi.rejectWithValue("Піц нема");
+    // }
+    //#endregion
+
+    return thunkApi.fulfillWithValue(data);
   }
 );
 
