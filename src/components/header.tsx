@@ -1,7 +1,7 @@
 // import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/pizza-logo.svg";
-import Search from "./Search/";
+import Search from "./Search";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../store/slices/cart-slice";
 
@@ -9,7 +9,11 @@ function Header() {
   const { totalPrice, items } = useSelector(cartSelector);
   // const location = useLocation();
   // console.log(location.pathname);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+
+  const totalCount = items.reduce(
+    (sum: number, item: any) => sum + item.count,
+    0
+  );
 
   return (
     <div className="header">

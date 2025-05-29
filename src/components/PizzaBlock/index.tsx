@@ -5,14 +5,23 @@ import { Link } from "react-router-dom";
 
 const typeName = ["тонке", "традиційне"];
 
-export default function PizzaBlock({
+interface Props {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+}
+
+const PizzaBlock: React.FC<Props> = ({
   id,
   title,
   price,
   imageUrl,
   sizes,
   types,
-}) {
+}) => {
   const dispatch = useDispatch();
   const [activeSize, setActiveSize] = useState(0);
   const [activeType, setActiveType] = useState(0);
@@ -92,4 +101,6 @@ export default function PizzaBlock({
       </div>
     </div>
   );
-}
+};
+
+export default PizzaBlock;

@@ -1,13 +1,18 @@
-export default function Categories({ value, onClickCategory }) {
-  const categories = [
-    "Все",
-    "М'ясні",
-    "Вегетеріанські",
-    "Гриль",
-    "Гострі",
-    "Закриті",
-  ];
+const categories = [
+  "Все",
+  "М'ясні",
+  "Вегетеріанські",
+  "Гриль",
+  "Гострі",
+  "Закриті",
+];
 
+interface Props {
+  value: number;
+  onClickCategory: (index: number) => void;
+}
+
+const Categories: React.FC<Props> = ({ value, onClickCategory }) => {
   return (
     <div className="categories">
       <ul>
@@ -25,4 +30,6 @@ export default function Categories({ value, onClickCategory }) {
       </ul>
     </div>
   );
-}
+};
+
+export default Categories;
