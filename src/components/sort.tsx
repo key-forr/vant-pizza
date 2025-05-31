@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   filterSelector,
   selectSortType,
@@ -14,9 +14,13 @@ export const sortList: SortType[] = [
   { name: "алфавіту", sortProperty: sortProperty.TITLE },
 ];
 
-export default function Sort() {
+interface SortProps {
+  sortType: SortType;
+  sortOrder: boolean
+}
+
+const Sort: React.FC<SortProps> = memo(({ sortType, sortOrder }) => {
   const [isShow, setIsShow] = useState(false);
-  const { sortType, sortOrder } = useSelector(filterSelector);
   const dispatch = useDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -79,5 +83,7 @@ export default function Sort() {
         </div>
       )}
     </div>
-  );
-}
+  )
+})
+
+export default Sort

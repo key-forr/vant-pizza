@@ -1,3 +1,6 @@
+import { useWhyDidYouUpdate } from "ahooks"
+import { memo } from "react";
+
 const categories = [
   "Все",
   "М'ясні",
@@ -12,7 +15,9 @@ interface Props {
   onClickCategory: (index: number) => void;
 }
 
-const Categories: React.FC<Props> = ({ value, onClickCategory }) => {
+const Categories: React.FC<Props> = memo(({ value, onClickCategory }) => {
+  useWhyDidYouUpdate("Categories", { value, onClickCategory })
+
   return (
     <div className="categories">
       <ul>
@@ -30,6 +35,6 @@ const Categories: React.FC<Props> = ({ value, onClickCategory }) => {
       </ul>
     </div>
   );
-};
+})
 
 export default Categories;

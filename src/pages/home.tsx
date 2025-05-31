@@ -10,12 +10,9 @@ import Pagination from "../components/Pagination";
 import {  useSelector } from "react-redux";
 import {
   filterSelector,
-  FilterStateProps,
   selectCategory,
   selectPage,
   setFilters,
-  sortProperty,
-  SortType
 } from "../store/slices/filter-slice";
 import { FetchPizzaProps, fetchPizzas, pizzaSelector } from "../store/slices/pizza-slice";
 import { useCallback } from "react";
@@ -34,6 +31,10 @@ const Home = () => {
 
   const category = categoryId ? `category=${categoryId}` : "";
   const orderType = sortOrder ? "asc" : "desc";
+
+  const onChangeCategory = useCallback((index: number) => {
+    dispatch(selectCategory(index))
+  }, [])
 
   const getPizzas = useCallback(async () => {
     //#region
@@ -103,6 +104,7 @@ const Home = () => {
     }
     isMounted.current = true;
   }, [categoryId, sortType, orderType, pageNumber, navigate]);
+  
   const items = pizzas
     .filter((pizza) =>
       pizza.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -122,9 +124,9 @@ const Home = () => {
         })} */}
         <Categories
           value={categoryId}
-          onClickCategory={(index) => dispatch(selectCategory(index))}
+          onClickCategory={onChangeCategory}
         />
-        <Sort />
+        <Sort sortType={sortType} sortOrder={sortOrder}/>
       </div>
       <h2 className="content__title">Всі піци</h2>
       {status == "error" ? (
