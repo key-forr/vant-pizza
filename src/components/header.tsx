@@ -4,16 +4,28 @@ import logo from "../assets/img/pizza-logo.svg";
 import Search from "./Search";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../store/slices/cart-slice";
+import { useEffect, useRef } from "react";
 
 function Header() {
   const { totalPrice, items } = useSelector(cartSelector);
   // const location = useLocation();
   // console.log(location.pathname);
 
+  const isMounted = useRef(false)
+
   const totalCount = items.reduce(
     (sum: number, item: any) => sum + item.count,
     0
   );
+
+  useEffect(() => {
+    if(isMounted.current) {
+      const json = JSON.stringify(items)
+      localStorage.setItem('vant-pizza-cart', json)
+    }
+    
+    isMounted.current = true
+  }, [items]);
 
   return (
     <div className="header">
