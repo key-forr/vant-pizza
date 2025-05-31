@@ -2,19 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import {
   filterSelector,
   selectSortType,
+  sortProperty,
+  SortType,
   switchOrder,
 } from "../store/slices/filter-slice";
 import { useDispatch, useSelector } from "react-redux";
 
-type SortListItem = {
-  name: string;
-  sortProperty: string;
-};
-
-export const sortList: SortListItem[] = [
-  { name: "популярності", sortProperty: "rating" },
-  { name: "ціні", sortProperty: "price" },
-  { name: "алфавіту", sortProperty: "title" },
+export const sortList: SortType[] = [
+  { name: "популярності", sortProperty: sortProperty.RATING },
+  { name: "ціні", sortProperty: sortProperty.PRICE },
+  { name: "алфавіту", sortProperty: sortProperty.TITLE },
 ];
 
 export default function Sort() {
@@ -23,7 +20,7 @@ export default function Sort() {
   const dispatch = useDispatch();
   const sortRef = useRef<HTMLDivElement>(null);
 
-  const onClickListItem = (object: SortListItem) => {
+  const onClickListItem = (object: SortType) => {
     dispatch(selectSortType(object));
     setIsShow(false);
   };

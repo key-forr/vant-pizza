@@ -1,11 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
-const initialState = {
+export const sortProperty = {
+  RATING: "rating",
+  TITLE: "title",
+  PRICE: "price"
+} as const 
+
+export type sortProperty = typeof sortProperty[keyof typeof sortProperty]
+
+export type SortType = {
+  name: string,
+  sortProperty: sortProperty,
+}
+
+export interface FilterStateProps {
+  searchValue: string;
+  categoryId: number;
+  sortType: SortType
+  sortOrder: boolean,
+  pageNumber: number,
+}
+
+const initialState: FilterStateProps = {
   searchValue: "",
   categoryId: 0,
   sortType: {
     name: "популярності",
-    sortProperty: "rating",
+    sortProperty: sortProperty.RATING,
   },
   sortOrder: true,
   pageNumber: 1,
@@ -15,19 +37,19 @@ export const filterSlice = createSlice({
   name: "filter",
   initialState: initialState,
   reducers: {
-    selectCategory: (state, action) => {
+    selectCategory: (state, action: PayloadAction<number>) => {
       state.categoryId = action.payload;
     },
-    selectSortType: (state, action) => {
+    selectSortType: (state, action: PayloadAction<SortType>) => {
       state.sortType = action.payload;
     },
     switchOrder: (state) => {
       state.sortOrder = !state.sortOrder;
     },
-    selectPage: (state, action) => {
+    selectPage: (state, action: PayloadAction<number>) => {
       state.pageNumber = action.payload;
     },
-    setFilters: (state, action) => {
+    setFilters: (state, action: PayloadAction<FilterStateProps>) => {
       state.categoryId = Number(action.payload.categoryId);
       state.sortType = action.payload.sortType;
       state.sortOrder = action.payload.sortOrder;
@@ -39,7 +61,7 @@ export const filterSlice = createSlice({
   },
 });
 
-export const filterSelector = (state) => state.filter;
+export const filterSelector = (state: RootState) => state.filter;
 
 export const {
   selectCategory,

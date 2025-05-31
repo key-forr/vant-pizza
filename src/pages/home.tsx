@@ -7,21 +7,26 @@ import Sort, { sortList } from "../components/sort";
 import PizzaBlock from "../components/PizzaBlock";
 import { Skeleton } from "../components/PizzaBlock/skeleton";
 import Pagination from "../components/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import {
+  filterSelector,
+  FilterStateProps,
   selectCategory,
   selectPage,
   setFilters,
+  sortProperty,
+  SortType
 } from "../store/slices/filter-slice";
-import { fetchPizzas } from "../store/slices/pizza-slice";
+import { FetchPizzaProps, fetchPizzas, pizzaSelector } from "../store/slices/pizza-slice";
 import { useCallback } from "react";
+import { useAppDispatch } from "../store/store";
 
 const Home = () => {
   const { searchValue, categoryId, sortOrder, sortType, pageNumber } =
-    useSelector((state) => state.filter);
+    useSelector(filterSelector);
 
-  const { pizzas, status } = useSelector((state) => state.pizza);
-  const dispatch = useDispatch();
+  const { pizzas, status } = useSelector(pizzaSelector);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const isSearch = useRef(false);
@@ -45,12 +50,12 @@ const Home = () => {
     //     setIsLoading(false);
     //   });
     //#endregion
-
+        
     dispatch(
       fetchPizzas({
         category,
         orderType,
-        pageNumber,
+        pageNumber: String(pageNumber),
         sortType,
       })
     );
@@ -60,13 +65,17 @@ const Home = () => {
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortType);
+      const params = (qs.parse(window.location.search.substring(1)) as unknown) as FetchPizzaProps;
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortType.sortProperty) || sortList[0];
+
       dispatch(
         setFilters({
-          ...params,
-          sortType: sort,
-        })
+        sortType: sort,
+        categoryId: Number(params.category) || 0,
+        pageNumber: Number(params.pageNumber) || 1,
+        sortOrder: params.orderType === "asc",
+        searchValue: "", 
+      } )
       );
       isSearch.current = true;
     }

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addItem, minusItem, removeItem } from "../store/slices/cart-slice";
+import { addItem, CartItemType, minusItem, removeItem } from "../store/slices/cart-slice";
 
 interface Props {
   id: string;
@@ -22,7 +22,7 @@ const CartItem: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
   const onClickPlus = () => {
-    dispatch(addItem({ id }));
+    dispatch(addItem({ id } as CartItemType));
   };
 
   const onClickRemove = () => {
