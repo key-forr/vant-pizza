@@ -31,11 +31,12 @@ function App() {
     // </div>
     //#endregion
 
+    // App.tsx або де у вас налаштовані Routes
     <Routes>
       <Route path="/" element={<Main />}>
         <Route path="/" element={<Home />} />
+        <Route path="/pizza/:id" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/pizza/:id" element={<Pizza />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
