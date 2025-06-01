@@ -1,0 +1,326 @@
+@import "../variables";
+
+.footer {
+  background-color: #fff;
+  margin-top: auto;
+  padding: 40px 0 20px;
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+
+  // Dividing strip
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, $orange 0%, rgba(255, 105, 0, 0.6) 100%);
+    border-radius: 2px;
+  }
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 30px;
+
+    @media (max-width: 992px) {
+      gap: 30px;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 25px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__brand {
+    flex: 1;
+    min-width: 280px;
+
+    @media (max-width: 768px) {
+      min-width: auto;
+      text-align: center;
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
+
+    img {
+      margin-right: 15px;
+    }
+
+    h3 {
+      color: $orange;
+      font-size: 24px;
+      line-height: 29px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1%;
+      margin: 0 0 5px 0;
+    }
+  }
+
+  &__slogan {
+    color: #7b7b7b;
+    font-size: 16px;
+    line-height: 20px;
+    font-style: italic;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+      line-height: 18px;
+    }
+  }
+
+  &__contacts {
+    flex: 2;
+    display: flex;
+    gap: 40px;
+
+    @media (max-width: 992px) {
+      gap: 30px;
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 25px;
+    }
+  }
+
+  &__section {
+    flex: 1;
+    min-width: 200px;
+
+    @media (max-width: 768px) {
+      min-width: auto;
+      text-align: center;
+    }
+  }
+
+  &__title {
+    color: $black;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    border-bottom: 2px solid $orange;
+    padding-bottom: 8px;
+    display: inline-block;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+  }
+
+  &__emails,
+  &__phones {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__backup-emails {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  &__backup-label {
+    display: block;
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__link {
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 20px;
+    transition: color 0.15s ease-in-out;
+
+    &:hover {
+      color: $orange;
+    }
+
+    &--small {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+  }
+
+  &__social {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+
+  &__social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 0;
+    transition: all 0.15s ease-in-out;
+    border-radius: 4px;
+
+    @media (max-width: 768px) {
+      justify-content: center;
+      padding: 10px;
+      background-color: #f8f8f8;
+    }
+
+    svg {
+      flex-shrink: 0;
+      transition: transform 0.15s ease-in-out;
+    }
+
+    &:hover {
+      color: $orange;
+
+      @media (max-width: 768px) {
+        background-color: rgba(255, 105, 0, 0.1);
+      }
+
+      svg {
+        transform: scale(1.1);
+      }
+    }
+
+    // Specific colors for social networks on hover
+    &:nth-child(1):hover {
+      // Telegram
+      color: #0088cc;
+    }
+
+    &:nth-child(2):hover {
+      // Instagram
+      color: #e4405f;
+    }
+
+    &:nth-child(3):hover {
+      // Facebook
+      color: #1877f2;
+    }
+
+    &:nth-child(4):hover {
+      // TikTok
+      color: #000;
+    }
+
+    &:nth-child(5):hover {
+      // YouTube
+      color: #ff0000;
+    }
+  }
+
+  &__bottom {
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+    text-align: center;
+
+    p {
+      margin: 0;
+      color: #999;
+      font-size: 14px;
+      line-height: 20px;
+
+      @media (max-width: 768px) {
+        font-size: 12px;
+      }
+    }
+  }
+
+  // Dark theme support (if needed)
+  @media (prefers-color-scheme: dark) {
+    background-color: #1a1a1a;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+
+    &::before {
+      background: linear-gradient(
+        90deg,
+        $orange 0%,
+        rgba(255, 105, 0, 0.8) 100%
+      );
+    }
+
+    &__link {
+      color: #ccc;
+
+      &:hover {
+        color: $orange;
+      }
+    }
+
+    &__social-link {
+      color: #ccc;
+
+      @media (max-width: 768px) {
+        background-color: #2a2a2a;
+      }
+
+      &:hover {
+        @media (max-width: 768px) {
+          background-color: rgba(255, 105, 0, 0.2);
+        }
+      }
+    }
+
+    &__title {
+      color: #fff;
+    }
+
+    &__backup-emails {
+      border-top-color: #333;
+    }
+
+    &__bottom {
+      border-top-color: #333;
+
+      p {
+        color: #666;
+      }
+    }
+  }
+
+  // Animation for social links
+  @keyframes socialHover {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  &__social-link:hover svg {
+    animation: socialHover 0.3s ease-in-out;
+  }
+}

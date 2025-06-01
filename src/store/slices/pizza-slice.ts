@@ -3,14 +3,14 @@ import axios from "axios";
 import { type Pizza } from "../../@types/pizza";
 import { RootState } from "../store";
 
-export interface FetchPizzaProps  {
+export interface FetchPizzaProps {
   category: string;
   orderType: string;
   pageNumber: string;
   sortType: {
     sortProperty: string;
   };
-};
+}
 
 export const fetchPizzas = createAsyncThunk<Pizza[], FetchPizzaProps>(
   "pizza/fetchPizzasStatus",
@@ -18,7 +18,7 @@ export const fetchPizzas = createAsyncThunk<Pizza[], FetchPizzaProps>(
     const { category, orderType, pageNumber, sortType } = params;
 
     const { data } = await axios.get<Pizza[]>(
-      `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
+      `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=8&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
     );
 
     //#region
@@ -28,7 +28,7 @@ export const fetchPizzas = createAsyncThunk<Pizza[], FetchPizzaProps>(
     //   return thunkApi.rejectWithValue("Піц нема");
     // }
     //#endregion
-    return thunkApi.fulfillWithValue(data) ;
+    return thunkApi.fulfillWithValue(data);
   }
 );
 
@@ -38,23 +38,23 @@ export const fetchPizzas = createAsyncThunk<Pizza[], FetchPizzaProps>(
 //   ERROR = "error"
 // }
 
-export const Status = { 
+export const Status = {
   LOADING: "loading",
   SUCCESS: "success",
-  ERROR: "error"
+  ERROR: "error",
 } as const;
 
-export type Status = typeof Status[keyof typeof Status]
+export type Status = (typeof Status)[keyof typeof Status];
 
 interface PizzaStateProps {
-    pizzas: Pizza[];
-    status: Status
+  pizzas: Pizza[];
+  status: Status;
 }
 
-const initialState: PizzaStateProps= {
+const initialState: PizzaStateProps = {
   pizzas: [],
-  status: Status.LOADING
-}
+  status: Status.LOADING,
+};
 
 export const pizzaSlice = createSlice({
   name: "pizza",
@@ -80,7 +80,7 @@ export const pizzaSlice = createSlice({
   },
 });
 
-export const pizzaSelector = (state: RootState) => state.pizza
+export const pizzaSelector = (state: RootState) => state.pizza;
 
 export const { setPizzas } = pizzaSlice.actions;
 

@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import NotFound from "./pages/not-found";
 import Pizza from "./pages/pizza";
 import Main from "./layouts/main";
+import MissingPage from "./layouts/missing-page";
 
 // export const SearchContext = createContext();
 
@@ -36,8 +37,10 @@ function App() {
       <Route path="/" element={<Main />}>
         <Route path="/" element={<Home />} />
         <Route path="/pizza/:id" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
+      </Route>
+      <Route path="/" element={<MissingPage />}>
         <Route path="*" element={<NotFound />} />
+        <Route path="/cart" element={<Cart />} />
       </Route>
     </Routes>
   );

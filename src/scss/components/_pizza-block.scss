@@ -1,4 +1,4 @@
-@import '../variables';
+@import "../variables";
 
 .pizza-block {
   width: 280px;
@@ -71,4 +71,10 @@
     line-height: 27px;
     letter-spacing: 0.015em;
   }
+}
+
+.button--add:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }

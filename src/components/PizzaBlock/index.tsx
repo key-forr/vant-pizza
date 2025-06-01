@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, CartItemType, cartItemByIdSelector } from "../../store/slices/cart-slice";
+import {
+  addItem,
+  CartItemType,
+  cartItemByIdSelector,
+} from "../../store/slices/cart-slice";
 import { Link } from "react-router-dom";
 
 const typeName = ["тонке", "традиційне"];
@@ -25,11 +29,13 @@ const PizzaBlock: React.FC<PizzaProps> = ({
   const dispatch = useDispatch();
   const [activeSize, setActiveSize] = useState(0);
   const [activeType, setActiveType] = useState(0);
-  const cartItem = useSelector(cartItemByIdSelector(id));
+  const [isAdding, setIsAdding] = useState(false); // 👈 стейт
 
+  const cartItem = useSelector(cartItemByIdSelector(id));
   const addedCount = cartItem ? cartItem.count : 0;
 
   const onClickAdd = () => {
+    setIsAdding(true); // 👉 блокування кнопки
     const item: CartItemType = {
       id,
       title,
@@ -37,9 +43,13 @@ const PizzaBlock: React.FC<PizzaProps> = ({
       imageUrl,
       type: typeName[activeType],
       size: sizes[activeSize],
-      count: 0
+      count: 0,
     };
-    dispatch(addItem(item));
+
+    setTimeout(() => {
+      dispatch(addItem(item));
+      setIsAdding(false); // 👉 розблокування після затримки
+    }, 1000);
   };
 
   return (
@@ -54,9 +64,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
             {types.map((type, index) => (
               <li
                 key={type}
-                onClick={() => {
-                  setActiveType(index);
-                }}
+                onClick={() => setActiveType(index)}
                 className={activeType === index ? "active" : ""}
               >
                 {typeName[type]}
@@ -67,9 +75,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
             {sizes.map((size, index) => (
               <li
                 key={size}
-                onClick={() => {
-                  setActiveSize(index);
-                }}
+                onClick={() => setActiveSize(index)}
                 className={activeSize === index ? "active" : ""}
               >
                 {size} см.
@@ -82,6 +88,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
           <button
             onClick={onClickAdd}
             className="button button--outline button--add"
+            disabled={isAdding} // 👈 блокування
           >
             <svg
               width="12"
@@ -95,7 +102,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
                 fill="white"
               />
             </svg>
-            <span>Добавити</span>
+            <span>{isAdding ? "Додається..." : "Добавити"}</span>
             {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
