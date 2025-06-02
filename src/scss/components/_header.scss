@@ -1,4 +1,4 @@
-@import '../variables';
+@import "../variables";
 
 .header {
   border-bottom: 1px solid $gray-line;
@@ -35,6 +35,128 @@
 
     p {
       color: #7b7b7b;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-left: auto;
+
+    @media (max-width: 768px) {
+      gap: 15px;
+    }
+
+    @media (max-width: 645px) {
+      flex-direction: column;
+      margin-left: 0;
+      gap: 15px;
+      margin-top: 20px;
+    }
+  }
+
+  &__center {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: auto;
+    margin-right: 20px;
+
+    @media (max-width: 645px) {
+      margin-left: 0;
+      margin-right: 0;
+      gap: 20px;
+    }
+  }
+
+  &__search {
+    input {
+      padding: 12px 20px;
+      border: 2px solid #f0f0f0;
+      border-radius: 25px;
+      font-size: 14px;
+      width: 300px;
+
+      &:focus {
+        outline: none;
+        border-color: #fe5f1e;
+      }
+
+      @media (max-width: 768px) {
+        width: 250px;
+      }
+
+      @media (max-width: 645px) {
+        width: 220px;
+      }
+    }
+  }
+
+  &__auth {
+    display: flex;
+    align-items: center;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background: linear-gradient(
+      135deg,
+      rgba(254, 95, 30, 0.1),
+      rgba(254, 95, 30, 0.05)
+    );
+    border: 1px solid rgba(254, 95, 30, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(254, 95, 30, 0.15),
+        rgba(254, 95, 30, 0.08)
+      );
+      border-color: rgba(254, 95, 30, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(254, 95, 30, 0.2);
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #fe5f1e;
+      object-fit: cover;
+    }
+  }
+
+  &__welcome {
+    font-size: 14px;
+    font-weight: 500;
+    color: #232323;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .button--auth {
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 2px solid #fe5f1e;
+    background: transparent;
+    color: #fe5f1e;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #fe5f1e;
+      color: white;
     }
   }
 }

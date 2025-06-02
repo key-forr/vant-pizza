@@ -4,22 +4,22 @@ import { RootState } from "../store";
 export const sortProperty = {
   RATING: "rating",
   TITLE: "title",
-  PRICE: "price"
-} as const 
+  PRICE: "price",
+} as const;
 
-export type sortProperty = typeof sortProperty[keyof typeof sortProperty]
+export type sortProperty = (typeof sortProperty)[keyof typeof sortProperty];
 
 export type SortType = {
-  name: string,
-  sortProperty: sortProperty,
-}
+  name: string;
+  sortProperty: sortProperty;
+};
 
 export interface FilterStateProps {
   searchValue: string;
   categoryId: number;
-  sortType: SortType
-  sortOrder: boolean,
-  pageNumber: number,
+  sortType: SortType;
+  sortOrder: boolean;
+  pageNumber: number;
 }
 
 const initialState: FilterStateProps = {
@@ -49,14 +49,34 @@ export const filterSlice = createSlice({
     selectPage: (state, action: PayloadAction<number>) => {
       state.pageNumber = action.payload;
     },
-    setFilters: (state, action: PayloadAction<FilterStateProps>) => {
-      state.categoryId = Number(action.payload.categoryId);
-      state.sortType = action.payload.sortType;
-      state.sortOrder = action.payload.sortOrder;
-      state.pageNumber = Number(action.payload.pageNumber);
+    setFilters: (state, action: PayloadAction<Partial<FilterStateProps>>) => {
+      // Безпечне оновлення з перевіркою наявності властивостей
+      if (action.payload.categoryId !== undefined) {
+        state.categoryId = Number(action.payload.categoryId);
+      }
+      if (action.payload.sortType) {
+        state.sortType = action.payload.sortType;
+      }
+      if (action.payload.sortOrder !== undefined) {
+        state.sortOrder = action.payload.sortOrder;
+      }
+      if (action.payload.pageNumber !== undefined) {
+        state.pageNumber = Number(action.payload.pageNumber);
+      }
+      if (action.payload.searchValue !== undefined) {
+        state.searchValue = action.payload.searchValue;
+      }
     },
     setSearchValue: (state, action) => {
       state.searchValue = action.payload;
+    },
+    // Додаємо reducer для скидання до початкових значень
+    resetFilters: (state) => {
+      state.searchValue = initialState.searchValue;
+      state.categoryId = initialState.categoryId;
+      state.sortType = initialState.sortType;
+      state.sortOrder = initialState.sortOrder;
+      state.pageNumber = initialState.pageNumber;
     },
   },
 });
@@ -70,6 +90,7 @@ export const {
   selectPage,
   setFilters,
   setSearchValue,
+  resetFilters,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

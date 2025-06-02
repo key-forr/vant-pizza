@@ -15,6 +15,7 @@ import {
   selectCategory,
   selectPage,
   setFilters,
+  FilterStateProps,
 } from "../store/slices/filter-slice";
 import {
   FetchPizzaProps,
@@ -23,8 +24,18 @@ import {
 } from "../store/slices/pizza-slice";
 import { useCallback } from "react";
 import { useAppDispatch } from "../store/store";
+import { useAuthInitialization } from "../hooks/useAuthInitialization";
+
+// Интерфейс для URL параметров
+interface URLParams {
+  sortType?: string;
+  category?: string;
+  pageNumber?: string;
+  orderType?: string;
+}
 
 const Home = () => {
+  useAuthInitialization();
   const { searchValue, categoryId, sortOrder, sortType, pageNumber } =
     useSelector(filterSelector);
 
@@ -41,26 +52,14 @@ const Home = () => {
   const category = categoryId ? `category=${categoryId}` : "";
   const orderType = sortOrder ? "asc" : "desc";
 
-  const onChangeCategory = useCallback((index: number) => {
-    dispatch(selectCategory(index));
-  }, []);
+  const onChangeCategory = useCallback(
+    (index: number) => {
+      dispatch(selectCategory(index));
+    },
+    [dispatch]
+  );
 
   const getPizzas = useCallback(async () => {
-    //#region
-    // axios
-    //   .get(
-    //     `${process.env.REACT_APP_SERVER_URL}/items?page=${pageNumber}&limit=4&${category}&sortBy=${sortType.sortProperty}&order=${orderType}`
-    //   )
-    //   .then((res) => {
-    //     setPizzas(res.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setIsLoading(false);
-    //   });
-    //#endregion
-
     dispatch(
       fetchPizzas({
         category,
@@ -71,17 +70,26 @@ const Home = () => {
     );
 
     window.scrollTo(0, 0);
-  }, [pageNumber, category, sortType.sortProperty, orderType]);
+  }, [dispatch, pageNumber, category, sortType, orderType]);
 
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(
         window.location.search.substring(1)
-      ) as unknown as FetchPizzaProps;
-      const sort =
-        sortList.find(
-          (obj) => obj.sortProperty === params.sortType.sortProperty
-        ) || sortList[0];
+      ) as unknown as URLParams;
+
+      // ВИПРАВЛЕННЯ: Правильне отримання sortType з URL
+      let sort = sortList[0]; // Дефолтне значення
+
+      if (params.sortType) {
+        // Шукаємо sort об'єкт за sortProperty
+        const foundSort = sortList.find(
+          (obj) => obj.sortProperty === params.sortType
+        );
+        if (foundSort) {
+          sort = foundSort;
+        }
+      }
 
       dispatch(
         setFilters({
@@ -104,7 +112,7 @@ const Home = () => {
     }
 
     isSearch.current = false;
-  }, [categoryId, sortType, orderType, pageNumber, fetchPizzas]);
+  }, [categoryId, sortType, orderType, pageNumber, getPizzas]);
 
   useEffect(() => {
     if (isMounted.current) {
@@ -133,10 +141,6 @@ const Home = () => {
     <>
       <div className="container">
         <div className="content__top">
-          {/* {Categories({
-            value: categoryId,
-            onClickCategory: (index) => onClickCategory(index),
-          })} */}
           <Categories value={categoryId} onClickCategory={onChangeCategory} />
           <Sort sortType={sortType} sortOrder={sortOrder} />
         </div>
