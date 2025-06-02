@@ -7,8 +7,6 @@ import Home from "./pages/home";
 import NotFound from "./pages/not-found";
 import Main from "./layouts/main";
 import MissingPage from "./layouts/missing-page";
-import SignInPage from "./pages/sign-in";
-import SignUpPage from "./pages/sign-up";
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY as string;
 
@@ -28,8 +26,6 @@ function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
       </Routes>
     </ClerkProvider>
   );
