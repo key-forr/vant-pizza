@@ -77,14 +77,12 @@ const PizzaModal: React.FC = () => {
 
     dispatch(addItem(item));
 
-    // Імітуємо затримку для показу стану завантаження
     setTimeout(() => {
       setAddingToCart(false);
-      // Закриваємо модальне вікно через 500мс після завершення завантаження
       setTimeout(() => {
         navigate("/");
       }, 500);
-    }, 1500); // Показуємо завантаження протягом 1.5 секунд
+    }, 1500);
   };
 
   if (!pizza) {
@@ -134,6 +132,12 @@ const PizzaModal: React.FC = () => {
               <div className={styles.rating}>
                 <span>Рейтинг: {pizza.rating}/10</span>
               </div>
+
+              {pizza.description && (
+                <div className={styles.description}>
+                  <p>{pizza.description}</p>
+                </div>
+              )}
 
               <div className={styles.selector}>
                 <div className={styles.selectorGroup}>

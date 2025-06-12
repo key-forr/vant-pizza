@@ -1,0 +1,243 @@
+// src/components/OrderModal/OrderModal.scss
+.order-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.order-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalFadeIn 0.3s ease-out;
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 24px;
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #232323;
+      margin: 0;
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+  }
+
+  &__form {
+    padding: 0 24px 24px;
+  }
+
+  &__field {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #232323;
+      font-size: 14px;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #fe5f1e;
+    }
+
+    &--disabled {
+      background-color: #f8f8f8;
+      color: #666;
+      cursor: not-allowed;
+    }
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #fe5f1e;
+    }
+
+    &::placeholder {
+      color: #999;
+    }
+  }
+
+  &__summary {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-top: 8px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 18px;
+    }
+
+    span {
+      color: #232323;
+
+      &:first-child {
+        color: #666;
+      }
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 12px;
+    flex-direction: column;
+
+    @media (min-width: 480px) {
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+
+    .button {
+      flex: 1;
+      min-height: 48px;
+      font-weight: 600;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @media (min-width: 480px) {
+        flex: none;
+        min-width: 140px;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &--outline {
+        background-color: transparent;
+        border-color: #d0d0d0;
+        color: #232323;
+
+        &:hover:not(:disabled) {
+          border-color: #b0b0b0;
+          background-color: #f5f5f5;
+        }
+      }
+
+      &:not(.button--outline) {
+        background-color: #fe5f1e;
+        color: white;
+
+        &:hover:not(:disabled) {
+          background-color: #e8520d;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 8px rgba(254, 95, 30, 0.3);
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .order-modal {
+    margin: 16px;
+    width: calc(100% - 32px);
+
+    &__header {
+      padding: 16px 16px 0;
+      margin-bottom: 16px;
+
+      h2 {
+        font-size: 20px;
+      }
+    }
+
+    &__form {
+      padding: 0 16px 16px;
+    }
+
+    &__field {
+      margin-bottom: 16px;
+    }
+
+    &__summary {
+      margin-bottom: 16px;
+    }
+  }
+}
