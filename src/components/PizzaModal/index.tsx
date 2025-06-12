@@ -67,7 +67,7 @@ const PizzaModal: React.FC = () => {
     const item: CartItemType = {
       id: pizza.id,
       title: pizza.title,
-      price: pizza.price,
+      price: getAdjustedPrice(),
       imageUrl: pizza.imageUrl,
       type: typeName[activeType],
       size: pizza.sizes[activeSize],
@@ -96,7 +96,11 @@ const PizzaModal: React.FC = () => {
       </div>
     );
   }
-
+  const getAdjustedPrice = () => {
+    const baseSize = pizza.sizes[0];
+    const selectedSize = pizza.sizes[activeSize];
+    return Math.round(pizza.price * (selectedSize / baseSize));
+  };
   return (
     <div className={styles.modal}>
       <div className={styles.backdrop} onClick={handleBackdropClick}>
@@ -176,7 +180,7 @@ const PizzaModal: React.FC = () => {
               </div>
 
               <div className={styles.priceSection}>
-                <div className={styles.price}>від {pizza.price} ₴ </div>
+                <div className={styles.price}>від {getAdjustedPrice()} ₴ </div>
                 <button
                   className={`${styles.addButton} ${
                     addingToCart ? styles.loading : ""

@@ -1,4 +1,3 @@
-// src/components/OrderModal/OrderModal.tsx
 import React, { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import "./OrderModal.scss";

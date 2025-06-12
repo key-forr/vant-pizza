@@ -39,7 +39,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
     const item: CartItemType = {
       id,
       title,
-      price,
+      price: getAdjustedPrice(),
       imageUrl,
       type: typeName[activeType],
       size: sizes[activeSize],
@@ -51,7 +51,11 @@ const PizzaBlock: React.FC<PizzaProps> = ({
       setIsAdding(false); // 👉 розблокування після затримки
     }, 1000);
   };
-
+  const getAdjustedPrice = () => {
+    const baseSize = sizes[0]; // найменший розмір
+    const selectedSize = sizes[activeSize];
+    return Math.round(price * (selectedSize / baseSize));
+  };
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
@@ -84,7 +88,7 @@ const PizzaBlock: React.FC<PizzaProps> = ({
           </ul>
         </div>
         <div className="pizza-block__bottom">
-          <div className="pizza-block__price">від {price} ₴</div>
+          <div className="pizza-block__price">від {getAdjustedPrice()} ₴</div>
           <button
             onClick={onClickAdd}
             className="button button--outline button--add"
