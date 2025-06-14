@@ -126,6 +126,55 @@
     }
   }
 
+  // Стилі для секції балів
+  &__points-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  &__points-actions {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+    min-width: 80px;
+
+    @media (min-width: 480px) {
+      flex-direction: row;
+      min-width: auto;
+    }
+  }
+
+  &__points-btn {
+    padding: 8px 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background: white;
+    color: #666;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover:not(:disabled) {
+      border-color: #fe5f1e;
+      color: #fe5f1e;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__points-info {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
   &__summary {
     background-color: #f8f8f8;
     border-radius: 8px;
@@ -141,9 +190,18 @@
 
     &:last-child {
       margin-bottom: 0;
+    }
+
+    &--discount {
+      color: #fe5f1e;
+      font-weight: 500;
+    }
+
+    &--total {
       padding-top: 8px;
       border-top: 1px solid #e0e0e0;
       font-size: 18px;
+      font-weight: 600;
     }
 
     span {
@@ -151,6 +209,25 @@
 
       &:first-child {
         color: #666;
+      }
+    }
+
+    // Стилі для знижки
+    &--discount span {
+      &:first-child {
+        color: #fe5f1e;
+      }
+      &:last-child {
+        color: #fe5f1e;
+      }
+    }
+
+    // Стилі для підсумкової суми
+    &--total span {
+      color: #232323;
+
+      &:first-child {
+        color: #232323;
       }
     }
   }
@@ -234,6 +311,16 @@
 
     &__field {
       margin-bottom: 16px;
+    }
+
+    &__points-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__points-actions {
+      flex-direction: row;
+      justify-content: space-between;
     }
 
     &__summary {

@@ -4,19 +4,23 @@ import {
   SignedOut,
   SignInButton,
   UserButton,
-  useUser,
 } from "@clerk/clerk-react";
 import logo from "../assets/img/pizza-logo.svg";
 import Search from "./Search";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../store/slices/cart-slice";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useUserSync } from "../hooks/useUserSync";
 
 function Header() {
   const { totalPrice, items } = useSelector(cartSelector);
-  const { user } = useUser();
+  const { clerkUser, dbUser, loading } = useUserSync();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isClerkMenuOpen, setIsClerkMenuOpen] = useState(false);
 
   const isMounted = useRef(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const totalCount = items.reduce(
     (sum: number, item: any) => sum + item.count,
@@ -31,6 +35,72 @@ function Header() {
 
     isMounted.current = true;
   }, [items]);
+
+  // Закриття меню при кліку поза ним
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+
+      // Перевіряємо чи клік був поза нашим меню
+      if (userMenuRef.current && !userMenuRef.current.contains(target)) {
+        // Додаткова перевірка для Clerk елементів
+        const isClerkElement =
+          target.closest("[data-clerk-element]") ||
+          target.closest(".cl-rootBox") ||
+          target.closest(".cl-card") ||
+          target.closest(".cl-modalContent") ||
+          target.closest(".cl-userButtonPopoverCard") ||
+          target.closest('[data-testid="user-button-popover"]');
+
+        if (isClerkElement) {
+          // Якщо клік на Clerk елементі, відзначаємо що Clerk меню відкрите
+          setIsClerkMenuOpen(true);
+          // Скасовуємо попередній таймер
+          if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+          }
+        } else {
+          // Якщо клік поза всіма меню, закриваємо наше меню
+          setShowUserMenu(false);
+          setIsClerkMenuOpen(false);
+        }
+      }
+    };
+
+    // Відстежуємо зміни в DOM для визначення коли Clerk меню закривається
+    const observer = new MutationObserver(() => {
+      const clerkPopover = document.querySelector(
+        '[data-testid="user-button-popover"], .cl-userButtonPopoverCard'
+      );
+      if (isClerkMenuOpen && !clerkPopover) {
+        // Clerk меню закрилося, ставимо таймер для закриття нашого меню
+        closeTimeoutRef.current = setTimeout(() => {
+          setIsClerkMenuOpen(false);
+        }, 100);
+      }
+    });
+
+    // Додаємо слухач події тільки коли меню відкрите
+    if (showUserMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Очищаємо слухач при размонтуванні або закритті меню
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      observer.disconnect();
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, [showUserMenu, isClerkMenuOpen]);
+
+  // Функція для обробки кліку на аватар
+  const handleAvatarClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    setShowUserMenu(!showUserMenu);
+  };
 
   return (
     <div className="header">
@@ -57,17 +127,85 @@ function Header() {
               </SignInButton>
             </SignedOut>
             <SignedIn>
-              <div className="header__user">
-                <span className="header__welcome">
-                  Привіт, {user?.firstName || user?.username}!
-                </span>
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-8 h-8",
-                    },
-                  }}
-                />
+              <div className="header__user-section">
+                {/* Інформація про користувача */}
+                <div className="header__user-info">
+                  <span className="header__welcome">
+                    {clerkUser?.firstName || clerkUser?.username}
+                  </span>
+                  {dbUser && (
+                    <span className="header__points">
+                      {dbUser.points} балів
+                    </span>
+                  )}
+                </div>
+
+                {/* Меню користувача */}
+                <div className="header__user-menu" ref={userMenuRef}>
+                  <button
+                    className="header__user-avatar"
+                    onClick={handleAvatarClick}
+                  >
+                    {clerkUser?.imageUrl ? (
+                      <img
+                        src={clerkUser.imageUrl}
+                        alt="Avatar"
+                        className="avatar-img"
+                      />
+                    ) : (
+                      <div className="avatar-placeholder">
+                        {(clerkUser?.firstName ||
+                          clerkUser?.username ||
+                          "U")[0].toUpperCase()}
+                      </div>
+                    )}
+                  </button>
+
+                  {showUserMenu && (
+                    <div className="header__dropdown">
+                      <Link
+                        to="/profile"
+                        className="dropdown-item"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        Мій профіль
+                      </Link>
+
+                      <div className="dropdown-divider"></div>
+
+                      {/* Clerk UserButton для виходу */}
+                      <UserButton
+                        appearance={{
+                          elements: {
+                            rootBox: "dropdown-clerk-btn",
+                            avatarBox: "hidden",
+                          },
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </SignedIn>
           </div>
