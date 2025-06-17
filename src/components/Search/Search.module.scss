@@ -1,6 +1,34 @@
 .root {
   position: relative;
   left: -100px;
+
+  // Large tablet adaptation
+  @media (max-width: 1024px) {
+    left: -50px;
+  }
+
+  // Tablet adaptation
+  @media (max-width: 768px) {
+    left: -20px;
+  }
+
+  // Mobile landscape adaptation
+  @media (max-width: 645px) {
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Mobile portrait adaptation
+  @media (max-width: 480px) {
+    left: 0;
+    margin: 10px 0;
+  }
+
+  // Small mobile adaptation
+  @media (max-width: 320px) {
+    margin: 8px 0;
+  }
 }
 
 .input {
@@ -11,6 +39,82 @@
   border-radius: 10px;
   font-size: 16px;
   transition: all 0.15s ease-in-out;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #fe5f1e;
+    box-shadow: 0 0 0 2px rgba(254, 95, 30, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+    transition: color 0.15s ease-in-out;
+  }
+
+  &:focus::placeholder {
+    color: #ccc;
+  }
+
+  // Large desktop adaptation
+  @media (min-width: 1400px) {
+    width: 450px;
+    padding: 14px 22px;
+    padding-left: 45px;
+    font-size: 17px;
+  }
+
+  // Large tablet adaptation
+  @media (max-width: 1024px) {
+    width: 350px;
+    padding: 11px 18px;
+    padding-left: 40px;
+    font-size: 15px;
+  }
+
+  // Tablet adaptation
+  @media (max-width: 768px) {
+    width: 300px;
+    padding: 10px 16px;
+    padding-left: 38px;
+    font-size: 14px;
+  }
+
+  // Mobile landscape adaptation
+  @media (max-width: 645px) {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 16px;
+    padding-left: 40px;
+    font-size: 15px;
+    border-radius: 25px;
+  }
+
+  // Mobile portrait adaptation
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 250px;
+    padding: 14px 16px;
+    padding-left: 42px;
+    font-size: 16px;
+    border-radius: 25px;
+  }
+
+  // Small mobile adaptation
+  @media (max-width: 360px) {
+    max-width: 220px;
+    padding: 12px 14px;
+    padding-left: 38px;
+    font-size: 15px;
+  }
+
+  // Very small mobile adaptation
+  @media (max-width: 320px) {
+    max-width: 200px;
+    padding: 10px 12px;
+    padding-left: 35px;
+    font-size: 14px;
+  }
 }
 
 .icon {
@@ -20,6 +124,64 @@
   position: absolute;
   left: 14px;
   top: 12px;
+  transition: opacity 0.15s ease-in-out;
+  pointer-events: none;
+
+  // Large desktop adaptation
+  @media (min-width: 1400px) {
+    width: 24px;
+    height: 24px;
+    left: 16px;
+    top: 14px;
+  }
+
+  // Large tablet adaptation
+  @media (max-width: 1024px) {
+    width: 20px;
+    height: 20px;
+    left: 13px;
+    top: 11px;
+  }
+
+  // Tablet adaptation
+  @media (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+    left: 12px;
+    top: 10px;
+  }
+
+  // Mobile landscape adaptation
+  @media (max-width: 645px) {
+    width: 20px;
+    height: 20px;
+    left: 14px;
+    top: 12px;
+  }
+
+  // Mobile portrait adaptation
+  @media (max-width: 480px) {
+    width: 22px;
+    height: 22px;
+    left: 16px;
+    top: 14px;
+  }
+
+  // Small mobile adaptation
+  @media (max-width: 360px) {
+    width: 20px;
+    height: 20px;
+    left: 14px;
+    top: 12px;
+  }
+
+  // Very small mobile adaptation
+  @media (max-width: 320px) {
+    width: 18px;
+    height: 18px;
+    left: 12px;
+    top: 10px;
+  }
 }
 
 .clearIcon {
@@ -29,9 +191,110 @@
   position: absolute;
   right: 15px;
   top: 15px;
+  transition: opacity 0.15s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.8;
-    cursor: pointer;
   }
+
+  &:active {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+
+  // Large desktop adaptation
+  @media (min-width: 1400px) {
+    width: 20px;
+    height: 20px;
+    right: 17px;
+    top: 17px;
+  }
+
+  // Large tablet adaptation
+  @media (max-width: 1024px) {
+    width: 16px;
+    height: 16px;
+    right: 14px;
+    top: 13px;
+  }
+
+  // Tablet adaptation
+  @media (max-width: 768px) {
+    width: 14px;
+    height: 14px;
+    right: 13px;
+    top: 12px;
+  }
+
+  // Mobile landscape adaptation
+  @media (max-width: 645px) {
+    width: 16px;
+    height: 16px;
+    right: 15px;
+    top: 14px;
+  }
+
+  // Mobile portrait adaptation
+  @media (max-width: 480px) {
+    width: 18px;
+    height: 18px;
+    right: 16px;
+    top: 16px;
+  }
+
+  // Small mobile adaptation
+  @media (max-width: 360px) {
+    width: 16px;
+    height: 16px;
+    right: 14px;
+    top: 14px;
+  }
+
+  // Very small mobile adaptation
+  @media (max-width: 320px) {
+    width: 14px;
+    height: 14px;
+    right: 12px;
+    top: 12px;
+  }
+}
+
+// Focus styles for better accessibility
+.input:focus + .icon {
+  opacity: 0.6;
+}
+
+// Search container responsive wrapper
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  @media (max-width: 645px) {
+    width: 100%;
+    justify-content: center;
+    margin: 15px 0;
+  }
+
+  @media (max-width: 480px) {
+    margin: 20px 0;
+  }
+}
+
+// Animation for search focus
+@keyframes searchFocus {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.input:focus {
+  animation: searchFocus 0.3s ease-in-out;
 }
